@@ -13,13 +13,15 @@ let userScore = 0;
 
 
 
+
 Btn.addEventListener('click',(e)=>{
     let randomNo = Math.floor(Math.random() * 79) + 1;
 
     Btn.textContent = 'Next'
     Btn.style.backgroundColor = "black"; 
-    questionNo.textContent = `Question: ${questionCount}/10` 
-    score.textContent = `Score: ${userScore}` 
+    questionNo.textContent = `Question: ${questionCount}/10`  
+    score.textContent = `Score: ${userScore}`
+
 
     questionCount++;
     
@@ -50,38 +52,32 @@ function generateQuestion(randomNo){
         let optionButton = document.createElement('button');
         optionButton.className = 'optn text-left border-2 rounded-md p-2 cursor-pointer';
         optionButton.textContent = option;
-        answerButtons.appendChild(optionButton);
-    })
 
-    
+        optionButton.addEventListener('click', (event) => {
+      
+            if (event.target.textContent === quizData[randomNo].correctAnswer) {
+              event.target.classList.add('bg-green-400');
+              event.target.classList.add('text-white');
+              userScore++; 
+              score.textContent = `Score: ${userScore}`;
+            } else {
+              event.target.style.backgroundColor = 'red'
+              event.target.style.color = 'white'
+              
+            }
+            const allButtons = document.querySelectorAll('.optn');
+            allButtons.forEach((button) => {
+            button.disabled = true;
+      });
+          });
+          answerButtons.appendChild(optionButton);
+    })
     questionSection.innerHTML = '';
+
     questionSection.appendChild(question)
     questionSection.appendChild(answerButtons)
 
 
-    let optn = document.getElementsByClassName('optn');
-    
-    for (let i = 0; i < optn.length; i++) {
-        optn[i].addEventListener('click', (event)=>{
-            
-            if (event.target.textContent === quizData[randomNo].correctAnswer) {
-                event.target.classList.add('bg-green-400')
-                event.target.classList.add('text-white')
-                userScore++
-                
-                
-            }
-            else{
-                console.log('hello');
-
-                // event.stopPropagation();
-                // event.target.classList.add('bg-red-400')
-                // event.target.classList.add('text-white')
-
-            }
-        })
-        
-    }
 
 
     
